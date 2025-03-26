@@ -1,0 +1,28 @@
+{
+  "name": "backscan",
+  "version": "1.0.0",
+  "description": "Este tutorial irá guiar um iniciante absoluto para configurar um ambiente de desenvolvimento no Ubuntu e rodar o projeto **BackScan**.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PedroHBessa/backscan.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PedroHBessa/backscan/issues"
+  },
+  "homepage": "https://github.com/PedroHBessa/backscan#readme",
+  "dependencies": {
+    "axios": "^1.8.4",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "twilio": "^5.5.1"
+  }
+}

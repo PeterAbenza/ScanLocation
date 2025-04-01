@@ -5,6 +5,9 @@ export default async function handler(req, res) {
   const TELEGRAM_BOT_TOKEN = "7502261188:AAEnUwY-rA1307JXO3R7_O-3o8rZnEpJIJY";
   const TELEGRAM_CHAT_ID = "-4636630107";
 
+  console.log("entrou no backend...");
+  console.log("Dados recebidos no backend:", req.body);
+
   if (req.method === "POST") {
     const { latitude, longitude } = req.body;
 

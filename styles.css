@@ -1,62 +1,154 @@
-/* Resetando margens e preenchimentos */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Definindo a fonte Poppins para todo o corpo */
-  body {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 400; /* Peso de fonte padrão, pode ajustar conforme necessidade */
-    line-height: 1.6; /* Opcional: melhora a legibilidade */
-    color: white;
-  }
-  
-  /* Caso queira usar uma versão específica do peso da fonte */
-  .poppins-thin {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 100;
-    font-style: normal;
-  }
-  
-  /* Estilo do Popup */
-  .popup {
-    display: flex; /* Inicialmente escondido */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  .popup-content {
-    background-color: #fff;
-    color: #6B02A3;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    width: 300px;
-  }
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
 
-  /* Estilo dos Botões */
-  .popup-button {
-    background-color: #fff;
-    color: #6B02A3;
-    padding: 10px 20px;
-    border: 2px solid #6B02A3;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 10px;
-    display: inline-block;
-    text-align: center;
-  }
+.comprovante-container {
+  background-color: white;
+  padding: 40px;
+  width: 450px;
+  border-radius: 12px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
 
-  .popup-button:hover {
-    background-color: #6B02A3;
-    color: #fff;
-  }
+.comprovante-container.blur {
+  filter: blur(5px);
+  transition: filter 0.3s ease;
+}
+
+h1 {
+  color: #6B02A3;
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.informacoes {
+  text-align: left;
+  margin-bottom: 30px;
+  font-size: 16px;
+}
+
+.informacoes p {
+  margin: 8px 0;
+  color: #7f8c8d;
+}
+
+.informacoes p span {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.botao {
+  background-color: #6B02A3;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  margin-top: 20px;
+}
+
+.botao:hover {
+  background-color: #BE80DE;
+  transform: scale(1.05);
+}
+
+.comprovante-footer {
+  margin-top: 30px;
+  font-size: 12px;
+  color: #bdc3c7;
+  line-height: 1.6;
+}
+
+.comprovante-footer a {
+  color: #D9A9EC;
+  text-decoration: none;
+}
+
+.comprovante-footer a:hover {
+  text-decoration: underline;
+}
+
+.map-link {
+  color: #BE80DE;
+  text-decoration: none;
+  display: block;
+  margin-top: 15px;
+}
+
+.map-link:hover {
+  text-decoration: underline;
+}
+
+.location-info {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  font-size: 12px;
+  margin-top: 20px;
+  color: #7f8c8d;
+}
+
+.location-info span {
+  font-weight: bold;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Caixa do modal */
+.modal {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  max-width: 400px;
+  width: 90%;
+}
+
+.modal p {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.modal button {
+  background-color: #6B02A3;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.modal button:hover {
+  background-color: #8f33c9;
+}
